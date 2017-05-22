@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+ 
+	
+  
+  <style>
+	*{
+		background-color:black;
+	}
+	div{
+		width:300px;
+		height:300px;
+		background-color:transparent;
+		margin:9% 35%;
+		position:relative;
+		perspective:10000px;
+		transform-style: preserve-3d;
+		-webkit-animation:box 10s linear 0s infinite alternate;
+	}
+	@-webkit-keyframes box{
+		0%  {transform:rotateX(0deg) rotateY(0deg);}
+		100%  {transform:rotateX(720deg) rotateY(720deg);}
+	}
+	@-webkit-keyframes photo{
+		0%  {width:0px;height:0px;}
+		100%  {width:300px;height:300px;}
+	}
+	img{
+		width:300px;
+		height:300px;
+		position:absolute;
+		transition:transform 1s linear 0s;
+		box-shadow:0px 0px 100px 0px #fff;
+		-webkit-animation:photo 10s;
+		opacity:0.8;
+	}
+	.img_1{
+		transform:translateZ(150px);
+	}
+	div:hover .img_1{
+		transform:translateZ(250px);
+	}
+	.img_2{
+		transform:rotateY(90deg) translateZ(-150px);
+	}
+	div:hover .img_2{
+		transform:rotateY(90deg) translateZ(-250px);
+	}
+	.img_3{
+		transform:rotateY(-90deg) translateZ(-150px);
+	}
+	div:hover .img_3{
+		transform:rotateY(-90deg) translateZ(-250px);
+	}
+	.img_4{
+		transform:rotateX(-90deg) translateZ(-150px);
+	}
+	div:hover .img_4{
+		transform:rotateX(-90deg) translateZ(-250px);
+	}
+	.img_5{
+		transform:rotateX(90deg) translateZ(-150px);
+	}
+	div:hover .img_5{
+		transform:rotateX(90deg) translateZ(-250px);
+	}
+	.img_6{
+		transform:translateZ(-150px);
+	}
+	div:hover .img_6{
+		transform:translateZ(-250px);
+	}
+  </style>
+ </head>
+ <body>
+	 <!--[if ie]><h1>请更换谷歌浏览器<h1><[endif]-->
+  <div>
+	<img src="" class="img_1"/>
+	<img src="" class="img_2"/>
+	<img src="" class="img_3"/>
+	<img src="" class="img_4"/>
+	<img src="" class="img_5"/>
+	<img src="" class="img_6"/>
+  </div>
+ </body>
+</html>
