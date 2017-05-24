@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>这是送给MY玲玲的</title>
+  <style>
+	*{
+		background-color:black;
+	}
+	div{
+		width:300px;
+		height:300px;
+		background-color:transparent;
+		margin:9% 35%;
+		position:relative;
+		perspective:10000px;
+		transform-style: preserve-3d;
+		-webkit-animation:box 10s linear 0s infinite alternate;
+	}
+	div:before{
+		content:"送给MY玲玲";
+		position:absolute;
+		bottom:150px;
+		font-size:50px;
+		font-weight:bold;
+		color:yellow;
+		-webkit-animation:font 10s;
+	}
+	@-webkit-keyframes box{
+		0%  {transform:rotateX(0deg) rotateY(0deg);}
+		100%  {transform:rotateX(720deg) rotateY(720deg);}
+	}
+	@-webkit-keyframes photo{
+		0%  {width:0px;height:0px;}
+		100%  {width:300px;height:300px;}
+	}
+	@-webkit-keyframes font{
+		0%  {font-size:0px;opacity:0;}
+		99.9%  {opacity:0;}
+		100%  {font-size:100px;opacity:0.8;}
+	}
+	img{
+		width:300px;
+		height:300px;
+		position:absolute;
+		border-radius:10px;
+		transition:transform 1s linear 0s;
+		box-shadow:0px 0px 100px 0px purple;
+		-webkit-animation:photo 10s;
+		opacity:0.8;
+	}
+	.img_1{
+		transform:translateZ(150px);
+	}
+	div:hover .img_1{
+		transform:translateZ(250px);
+	}
+	.img_2{
+		transform:rotateY(90deg) translateZ(-150px);
+	}
+	div:hover .img_2{
+		transform:rotateY(90deg) translateZ(-250px);
+	}
+	.img_3{
+		transform:rotateY(-90deg) translateZ(-150px);
+	}
+	div:hover .img_3{
+		transform:rotateY(-90deg) translateZ(-250px);
+	}
+	.img_4{
+		transform:rotateX(-90deg) translateZ(-150px);
+	}
+	div:hover .img_4{
+		transform:rotateX(-90deg) translateZ(-250px);
+	}
+	.img_5{
+		transform:rotateX(90deg) translateZ(-150px);
+	}
+	div:hover .img_5{
+		transform:rotateX(90deg) translateZ(-250px);
+	}
+	.img_6{
+		transform:translateZ(-150px);
+	}
+	div:hover .img_6{
+		transform:translateZ(-250px);
+	}
+  </style>
+ </head>
+ <body>
+  <div>
+	<img src="IMG_2269.JPG" class="img_1"/>
+	<img src="IMG_2270.JPG" class="img_2"/>
+	<img src="IMG_2271.JPG" class="img_3"/>
+	<img src="IMG_2272.JPG" class="img_4"/>
+	<img src="IMG_2275.JPG" class="img_5"/>
+	<img src="IMG_2274.JPG" class="img_6"/>
+  </div>
+ </body>
+</html>
