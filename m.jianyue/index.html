@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="react/react.js" type="text/javascript" charset="utf-8"></script>
+		<script src="react/react-dom.js" type="text/javascript" charset="utf-8"></script>
+		<script src="react/browser.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="react/JSXTransformer.js" type="text/javascript" charset="utf-8"></script>
+		<script src="react/ReactRouter.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="react/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{
+				margin: 0px;
+				padding: 0px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="example"></div>
+		<script src="controller/common.jsx" type="text/jsx" charset="utf-8"></script>
+		<script src="controller/book.jsx" type="text/jsx" charset="utf-8"></script>
+		<script src="controller/music.jsx" type="text/jsx" charset="utf-8"></script>
+		<script src="controller/movie.jsx" type="text/jsx" charset="utf-8"></script>
+		<script src="interface/interface.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/jsx">
+		
+			var {Router,Route,IndexRoute,IndexLink,Link} = ReactRouter;
+			
+			var App = React.createClass({
+				render:function(){
+					
+					var tabbarStyle = {
+						position:"fixed",
+						bottom:"0px",
+						width:"100%",
+						height:"49px",
+						backgroundColor:"black"
+					}
+					
+					var tabbarItemStyle = {
+						color:"white",
+						float:"left",
+						width:"33.33%",
+						textDecoration:"none",
+						textAlign:"center",
+						lineHeight:"49px"
+					}
+					
+					return <div>
+						
+						<div>
+							
+							{this.props.children}
+						</div>
+						<div style={tabbarStyle}> 
+							<IndexLink to="/" style={tabbarItemStyle}> 图书 </IndexLink>
+							<Link to="/Music" style={tabbarItemStyle}> 音乐 </Link>
+							<Link to="/Movie" style={tabbarItemStyle}> 电影 </Link>
+						</div>
+						
+					</div>
+				}
+			})
+			
+			ReactDOM.render(
+				<Router>
+					<Route path="/" component={App}>
+						<IndexRoute component={Book} />
+						<Route path="/Book" component={Book} />
+						<Route path="/BookDetail/:id" component={BookDetail} />
+						<Route path="/Music" component={Music} />
+						<Route path="/MusicDetail/:id" component={MusicDetail} />
+						<Route path="/Movie" component={Movie} />
+						<Route path="/MovieDetail/:id" component={MovieDetail} />
+					</Route>
+				</Router>,
+				document.getElementById("example")			
+			);
+			
+		</script>
+	</body>
+</html>
