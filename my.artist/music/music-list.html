@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar-nav>a:first-child{
+				background: url(../img/search_min.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 14px 0px 0px 5px !important;
+			}
+			.mui-bar-nav>a:last-child{
+				width: 25px;
+				height: 25px;
+				background: url(../img/user2.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 10px 0px 0px 5px !important;
+			}
+			
+			.mui-table-view{
+				background-color: #eee;
+				margin-top: 0px !important;
+			}
+			.mui-table-view-cell{
+				color: #8F8F94; ;
+				background-color: white;
+				margin-bottom: 15px;
+			}
+			.mui-media-body{
+				height: 100px;
+			}
+	    	.mui-img{
+	    		width: 100px;
+	    		margin-right: 10px;
+	    		border-radius: 50%;
+	    	}
+	    	.title{
+	    		color: black;
+	    		padding-bottom: 20px;
+				white-space: normal;
+	    	}
+	    	.action{
+				white-space: normal;
+	    	}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-pull-left"></a>
+		    <h1 class="mui-title">首页</h1>
+		    <a class="mui-icon mui-pull-right" onclick="homepage()"></a>
+		</header>
+		
+		
+		<div class="mui-content">
+		    <ul class="mui-table-view">
+			    
+			</ul>
+			<div style="display: none;">
+				<li id="cell-template" class="mui-table-view-cell mui-media">
+			        <a href="javascript:;">
+			            <img class="mui-pull-left mui-img" src="http://placehold.it/40x30">
+			            <div class="mui-media-body">
+			               	<p class="title"></p>
+			               	<p class="name">作者:<span></span></p>
+			                <p class="mui-ellipsis">7小时前 收藏:<span></span></p>
+			            </div>
+			            <p class="action"></p>
+			        </a>
+			    </li>
+			</div>
+		</div>
+		
+	</body>
+
+</html>
+<script src="../interface/interface.js"></script>
+<script type="text/javascript">
+	var url = musicListUrl;
+	mui.get(url,{},function(result){
+		var dict = JSON.parse(result);
+		
+		var tableView = document.querySelector(".mui-table-view");
+		var cellTemplate = document.getElementById("cell-template");
+		var list = dict.data;
+		for (var i=0;i<list.length;i++) {
+			var item = list[i];
+			
+			var newCell = cellTemplate.cloneNode(true);
+			
+			var imgTag = newCell.querySelector(".mui-img");
+			var titleTag = newCell.querySelector(".title");
+			var nameTag = newCell.querySelector(".name span");
+			var ellipsisTag = newCell.querySelector(".mui-ellipsis span");
+			var actionTag = newCell.querySelector(".action");
+			
+			imgTag.src = imagePrefix+item.img_url;
+			titleTag.innerHTML = item.title;
+			nameTag.innerHTML = item.user_name;
+			ellipsisTag.innerHTML = item.like_count;
+			actionTag.innerHTML = item.forward;
+			
+			
+			
+			tableView.appendChild(newCell);
+			
+			newCell.setAttribute("data-id",item.id);
+			
+			newCell.onclick = function(){
+				localStorage.detailId = this.getAttribute("data-id");
+				/*mui.openWindow("music-detail.html","music-detail");*/
+				
+			this.querySelector(".mui-table-view-cell a").href = "music-detail.html";
+			}
+		}
+		
+	})
+	function searchTo() {
+		mui.openWindow("../search/search.html","search");
+	}
+	function homepage () {
+		mui.openWindow("../homepage/homepage.html","homepage");
+	}
+</script>

@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar-nav>a:first-child{
+				background: url(../img/aliwx_common_back_btn_normal.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 14px 0px 0px 0px !important;
+			}
+			.mui-bar-nav>a:last-child{
+				width: 25px;
+				height: 25px;
+				background: url(../img/user2.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 10px 0px 0px 5px !important;
+			}
+			
+			
+			.audio-img{
+    		width: 100%;
+    		padding: 5%;
+    	}
+    	.audio-img img{
+    		width: 100%;
+    		border-radius: 50%;
+    		/*-webkit-animation-name: myfirst;
+			-webkit-animation-duration:	12s;
+			-webkit-animation-timing-function: linear;
+			-webkit-animation-delay: 0s;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-play-state: running;	*/
+    	}
+    	@keyframes myfirst
+		{
+		   from {-webkit-transform: rotate(0deg);}
+		   to {-webkit-transform: rotate(360deg);}
+		}
+    	p,h3{
+    		text-align: center;
+    	}
+    	p{
+    		font-size: 18px;
+    	}
+    	.album{
+    		margin: 0px;
+    		line-height: 18px;
+    	}
+    	.title-names{
+    		margin-bottom: 20px;
+    	}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-pull-left" onclick="musicBack()"></a>
+		    <h1 class="mui-title">音乐详情</h1>
+		    <a class="mui-icon mui-pull-right" onclick="homepage()"></a>
+		</header>
+		
+		<div class="mui-content">
+		   	<audio src="" controls="controls" style="width: 100%;"></audio>
+		   	<div class="audio-img">
+		   		<img src=""/>
+		   	</div>
+		   	<div class="cell-action">
+		   		<p class="album"></p>
+		   		<p class="title-names"></p>
+		   		<h3 class="title"></h3>
+		   		<p class="user_name">作者: <span></span></p>
+		   		<div class="action">
+		   			
+		   		</div>
+		   		<button class="mui-btn mui-pull-right" onclick="collect()">收藏</button>
+		   	</div>
+		   	
+		</div>
+	</body>
+
+</html>
+<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
+<script src="../interface/interface.js"></script>
+<script type="text/javascript">
+	var url = musicDetailUrl+"&detailId="+localStorage.detailId;
+	var audio = document.querySelector(".mui-content audio");
+	var audioImg = document.querySelector(".audio-img img");
+	var albumTag = document.querySelector(".album");
+	var titleNamesTag = document.querySelector(".title-names");
+	var titleTag = document.querySelector(".title");
+	var userName = document.querySelector(".user_name span");
+	var action = document.querySelector(".action");
+	
+	mui.get(url,{},function(result){
+		var dict = JSON.parse(result).data;
+		
+		
+		audio.src = imagePrefix+dict.media_url;
+		audioImg.src = imagePrefix+dict.cover;
+		albumTag.innerHTML = dict.album;
+		titleNamesTag.innerHTML = dict.user_name +" | "+ dict.album;
+		titleTag.innerHTML = dict.title;
+		userName.innerHTML = dict.user_name;
+		
+		var base64 = new Base64();
+		var str = base64.decode(dict.story);
+		action.innerHTML = str;
+		
+	})
+	var num = 0;
+	var timer;
+	audioImg.onclick = function(){
+		if (audio.paused) {
+			clearInterval(timer);
+			timer = setInterval(function(){
+				num+=0.5;
+				if(num >= 360){
+					num = 0;
+				}
+				audioImg.style.transform = "rotateZ("+num+"deg)";
+			},1)
+			flog = true;
+			audio.play();
+		} else{
+			clearInterval(timer);
+			flog = false;
+			audio.pause();
+		}
+	}
+	function musicBack () {
+		mui.back();
+		localStorage.isindex = "2";
+	}
+	
+	
+	var btnUrl = ifFavoriteUrl+"&userId="+localStorage.userId+"&itemId="+localStorage.detailId;
+	var button = document.querySelector(".mui-btn");
+	mui.get(btnUrl,function(result){
+		var dict = JSON.parse(result);
+		if (dict.data.isFavorite == "false") {
+			button.innerHTML = "收藏";
+		} else{
+			button.innerHTML = "取消收藏";
+		}
+		
+	})
+	
+	function collect () {
+		if (button.innerHTML == "收藏") {
+			var addUrl = saveFavoriteUrl+"&userId="+localStorage.userId+"&itemId="+localStorage.detailId+"&type=4";
+			mui.get(addUrl,function(result){
+				var dict = JSON.parse(result);
+			})
+			button.innerHTML = "取消收藏";
+		} else{
+			var reUrl = cancleFavoriteUrl+"&userId="+localStorage.userId+"&itemId="+localStorage.detailId;
+			mui.get(reUrl,function(result){
+				var dict = JSON.parse(result);
+			})
+			button.innerHTML = "收藏";
+		}
+	}
+	
+	
+	function homepage () {
+		mui.openWindow("../homepage/homepage.html","homepage");
+	}
+	
+</script>

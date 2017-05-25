@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		
+		<style type="text/css">
+			.mui-bar-nav>a:first-child{
+				background: url(../img/search_min.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 14px 0px 0px 5px !important;
+			}
+			.mui-bar-nav>a:last-child{
+				width: 25px;
+				height: 25px;
+				background: url(../img/user2.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 10px 0px 0px 5px !important;
+			}
+			
+			/*mui-content*/
+			.mui-table-view{
+				background-color: #eee;
+				margin-top: 0px !important;
+			}
+			.mui-table-view-cell{
+				color: #8F8F94; ;
+				background-color: white;
+				margin-bottom: 15px;
+			}
+			.cell-category{
+				text-align: center;
+			}
+			.cell-title{
+				font-size: 1.2em;
+				color: black;
+				padding: 10px 0px 0px;
+			}
+			.cell-author{
+				padding: 10px 0px;
+			}
+			.cell-img{
+				width: 100%;
+			}
+			.cell-forward{
+				padding: 10px 0px;
+				white-space: normal;
+			}
+			.cell-action{
+				font-size: 0.7em;
+			}
+			.mui-search{
+				height: 34px;
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-pull-left" onclick="dealSearch()"></a>
+		    <h1 class="mui-title">阅读</h1>
+		    <a class="mui-icon mui-pull-right" onclick="homepage()"></a>
+		</header>
+		
+		<div class="mui-content">
+			<div class="mui-input-row mui-search">
+		        <input type="search" class="mui-input-clear" placeholder="">
+		    </div>
+		    
+			<!--表格视图-->
+			<ul class="mui-table-view">
+			        
+			</ul>
+			<div style="display: none;">
+				<li id="cell-template" class="mui-table-view-cell">
+			        <a href="javascript:;">
+			        	<div class="cell-category">	
+			        	</div>
+			        	<div class="cell-title">
+			        	</div>
+			        	<div class="cell-author">	
+			        	</div>
+			        	<div class="cell-img-box">
+			        		<img class="cell-img" src=""/>
+			        	</div>
+			        	<div class="cell-forward">
+			        		
+			        	</div>
+			        	<div class="cell-action">
+			        		
+			        	</div>
+			        </a>
+			    </li>
+			</div>
+		</div>
+	</body>
+</html>
+<!--导入接口文件-->
+<script src="../interface/interface.js"></script>
+<script type="text/javascript">
+	var category_list = {
+		"1":"阅读",
+		"2":" ",
+		"3":" ",
+		"4":" ",
+		"5":" "
+	}
+	
+	var url = readListUrl;
+	mui.get(url,{},function(result) {
+
+		//将返回值result通过JSON解析
+		var dict = JSON.parse(result);
+
+		//输出,确认将返回值从字符串解析为对象
+
+		var tableView = document.querySelector(".mui-table-view");
+		var cellTemplate = document.querySelector("#cell-template");
+		var list = dict.data;
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+
+			//复制一个cell
+			var newCell = cellTemplate.cloneNode(true);
+
+			//修改值
+			var categoryTag = newCell.querySelector(".cell-category");
+			categoryTag.innerHTML = "- " +  category_list[item.category] + " -";	
+			
+			var titleTag = newCell.querySelector(".cell-title");
+			titleTag.innerHTML = item.title;
+
+			var authorTag = newCell.querySelector(".cell-author");
+			authorTag.innerHTML = "作者: " + item.user_name;
+
+			var imgTag = newCell.querySelector(".cell-img");
+			imgTag.src = imagePrefix + item.img_url;
+			
+			var forwardTag = newCell.querySelector(".cell-forward");
+			forwardTag.innerHTML = item.forward;
+			
+			var actionTag = newCell.querySelector(".cell-action");
+			actionTag.innerHTML = "7小时前&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + "收藏: " + item.like_count;
+			
+
+
+			//添加到表格中
+			tableView.appendChild(newCell);
+			
+			//显示下一个界面
+			newCell.setAttribute("data-id",item.id);
+			
+			newCell.onclick = function(){
+				localStorage.detailId = this.getAttribute("data-id");
+//				mui.openWindow("read-detail.html","read-detail");
+				
+			this.querySelector(".mui-table-view-cell a").href = "read-detail.html";
+			}
+			
+		}
+
+	});
+	
+	//搜索
+	function searchTo() {
+		mui.openWindow("../search/search.html","search");
+	}
+	
+	function homepage () {
+		mui.openWindow("../homepage/homepage.html","homepage");
+	}
+</script>

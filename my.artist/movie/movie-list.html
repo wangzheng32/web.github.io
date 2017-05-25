@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar-nav>a:first-child{
+				background: url(../img/search_min.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 14px 0px 0px 5px !important;
+			}
+			.mui-bar-nav>a:last-child{
+				width: 25px;
+				height: 25px;
+				background: url(../img/user2.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 10px 0px 0px 5px !important;
+			}
+			
+			.mui-table-view{
+				background-color: #eee;
+				margin-top: 0px !important;
+			}
+	    	.mui-table-view-cell{
+				color: #8F8F94; ;
+				background-color: white;
+				margin-bottom: 15px;
+			}
+	    	.title{
+	    		color: black;
+	    		font-size: 18px;
+				white-space: normal;
+				margin-bottom: 15px !important;
+	    	}
+	    	.cell-img{
+	    		width: 100%;
+	    	}
+	    	.cell-img img{
+	    		width: 100%;
+	    	}
+	    	.name{
+	    		font-size: 18px;
+	    		height: 22px;
+	    		line-height: 22px;
+	    		color: black;
+	    	}
+	    	.annotation{
+				white-space: normal;
+	    	}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-pull-left" onclick="searchTo()"></a>
+		    <h1 class="mui-title">首页</h1>
+		    <a class="mui-icon mui-pull-right" onclick="homepage()"></a>
+		</header>
+		
+		<div class="mui-content">
+		    <ul class="mui-table-view">
+			    
+			</ul>
+			<div style="display: none;">
+				<li id="cell-template" class="mui-table-view-cell mui-media">
+			        <a href="javascript:;">
+			            <p class="title"></p>
+			            <div class="cell-img">
+			            	<img src=""/>
+			            </div>
+			            <p class="name"></p>
+			            <p class="annotation"></p>
+			        </a>
+			    </li>
+			</div>
+		</div>
+		
+	</body>
+
+</html>
+<script src="../interface/interface.js"></script>
+<script type="text/javascript">
+
+	var url = movieListUrl;
+	mui.get(url,{},function(result){
+		var dict = JSON.parse(result);
+		
+		var tableView = document.querySelector(".mui-table-view");
+		var cellTemplate = document.getElementById("cell-template");
+		var list = dict.data;
+		for (var i=0;i<list.length;i++) {
+			var item = list[i];
+			
+			var newCell = cellTemplate.cloneNode(true);
+			
+			var titleTag = newCell.querySelector(".title");
+			var imgTag = newCell.querySelector(".cell-img img");
+			var nameTag = newCell.querySelector(".name");
+			var annotationTag = newCell.querySelector(".annotation");
+			
+			titleTag.innerHTML = item.title;
+			imgTag.src = imagePrefix+item.img_url;
+			nameTag.innerHTML = "《" + item.subtitle + "》";
+			annotationTag.innerHTML = "注: " + item.forward;
+			
+			
+			tableView.appendChild(newCell);
+			
+			newCell.setAttribute("data-id",item.id);
+			
+			newCell.onclick = function(){
+				localStorage.detailId = this.getAttribute("data-id");
+				/*mui.openWindow("movie-detail.html","movie-detail");*/
+				
+			this.querySelector(".mui-table-view-cell a").href = "movie-detail.html";
+			}
+			
+		}
+		
+	})
+	
+	function searchTo() {
+		mui.openWindow("../search/search.html","search");
+	}
+	function homepage () {
+		mui.openWindow("../homepage/homepage.html","homepage");
+	}
+</script>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar-nav>a:first-child{
+				background: url(../img/aliwx_common_back_btn_normal.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 14px 0px 0px 0px !important;
+			}
+			.mui-bar-nav>a:last-child{
+				width: 25px;
+				height: 25px;
+				background: url(../img/user2.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 10px 0px 0px 5px !important;
+			}
+			.mui-content{
+				background-color: white;
+				padding: 0px 10px;
+				padding-bottom: 50px;
+			}
+			.mui-content h3{
+				padding: 20px 0px;
+			}
+			.username{
+				font-size: 18px;
+				margin-bottom: 15px;
+			}
+			.contion{
+				color: black;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-pull-left" onclick="readBack()"></a>
+		    <h1 class="mui-title">阅读详情</h1>
+		    <a class="mui-icon mui-pull-right" onclick="homepage()"></a>
+		</header>
+		
+		<div class="mui-content">
+		    <h3></h3>
+		    <p class="username"></p>
+		    <p class="contion"></p>
+		    <button class="mui-btn mui-pull-right" onclick="collect()">收藏</button>
+		</div>
+		
+	</body>
+
+</html>
+<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
+<script src="../interface/interface.js"></script>
+<script type="text/javascript">
+	var url = readDetailUrl+"&detailId="+localStorage.detailId;
+	mui.get(url,{},function(result){
+		var dict = JSON.parse(result);
+		
+		mui(".mui-content h3")[0].innerHTML = dict.data.hp_title;
+		mui(".username")[0].innerHTML = "作者: "+dict.data.hp_author;
+		
+		//解密
+		var base64 = new Base64();
+		var str = base64.decode(dict.data.hp_content);
+		
+		//加载解密后的文本
+		mui(".contion")[0].innerHTML = str;
+	})
+	function readBack () {
+		mui.back();
+//		localStorage.isindex = "1";
+	}
+	
+	
+	var btnUrl = ifFavoriteUrl+"&userId="+localStorage.userId+"&itemId="+localStorage.detailId;
+	var button = document.querySelector(".mui-btn");
+	mui.get(btnUrl,function(result){
+		var dict = JSON.parse(result);
+		if (dict.data.isFavorite == "false") {
+			button.innerHTML = "收藏";
+		} else{
+			button.innerHTML = "取消收藏";
+		}
+		
+	})
+	
+	function collect () {
+		if (button.innerHTML == "收藏") {
+			var addUrl = saveFavoriteUrl+"&userId="+localStorage.userId+"&itemId="+localStorage.detailId+"&type=1";
+			mui.get(addUrl,function(result){
+				var dict = JSON.parse(result);
+			})
+			button.innerHTML = "取消收藏";
+		} else{
+			var reUrl = cancleFavoriteUrl+"&userId="+localStorage.userId+"&itemId="+localStorage.detailId;
+			mui.get(reUrl,function(result){
+				var dict = JSON.parse(result);
+			})
+			button.innerHTML = "收藏";
+		}
+	}
+	
+	function homepage () {
+		mui.openWindow("../homepage/homepage.html","homepage");
+	}
+</script>

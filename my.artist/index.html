@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+    </script>
+    <style type="text/css">
+    	iframe{
+    		border:none;
+    		height: 100%;
+    	}
+    	html,body,.mui-content,.mui-control-content{
+			height: 100%;
+		}
+    	#main-item span:first-child{
+    		background: url(img/main.png);
+    		background-size: 100% 100%;
+    	}
+    	#read-item span:first-child{
+    		background: url(img/read.png);
+    		background-size: 100% 100%;
+    	}
+    	#music-item span:first-child{
+    		background: url(img/music.png);
+    		background-size: 100% 100%;
+    	}
+    	#movie-item span:first-child{
+    		background: url(img/movie.png);
+    		background-size: 100% 100%;
+    	}
+    	/*激活状态*/
+    	#main-item.mui-active span:first-child{
+    		background: url(img/main_active.png);
+    		background-size: 100% 100%;
+    	}
+    	#read-item.mui-active span:first-child{
+    		background: url(img/read_active.png);
+    		background-size: 100% 100%;
+    	}
+    	#music-item.mui-active span:first-child{
+    		background: url(img/music_active.png);
+    		background-size: 100% 100%;
+    	}
+    	#movie-item.mui-active span:first-child{
+    		background: url(img/movie_active.png);
+    		background-size: 100% 100%;
+    	}
+    </style>
+</head>
+<body>
+	
+	<nav class="mui-bar mui-bar-tab">
+	    <a id="main-item" class="mui-tab-item" href="#main">
+	        <span class="mui-icon "></span>
+	        <span class="mui-tab-label">首页</span>
+	    </a>
+	    <a id="read-item" class="mui-tab-item" href="#read">
+	        <span class="mui-icon "></span>
+	        <span class="mui-tab-label">阅读</span>
+	    </a>
+	    <a id="music-item" class="mui-tab-item" href="#music">
+	        <span class="mui-icon "></span>
+	        <span class="mui-tab-label">音乐</span>
+	    </a>
+	    <a id="movie-item" class="mui-tab-item" href="#movie">
+	        <span class="mui-icon "></span>
+	        <span class="mui-tab-label">影视</span>
+	    </a>
+	</nav>
+	
+	<div class="mui-content">
+	    <div id="main" class="mui-control-content mui-active">
+	    	<iframe src="main/main-list.html" width="100%" height=""></iframe>
+	    </div>
+	    <div id="read" class="mui-control-content">
+	    	<iframe src="read/read-list.html" width="100%" height=""></iframe>
+	    </div>
+	    <div id="music" class="mui-control-content">
+	    	<iframe src="music/music-list.html" width="100%" height=""></iframe>
+	    </div>
+	    <div id="movie" class="mui-control-content">
+	    	<iframe src="movie/movie-list.html" width="100%" height=""></iframe>
+	    </div>
+	</div>
+	
+</body>
+</html>
+<script type="text/javascript">
+	var tabItems = document.querySelectorAll(".mui-tab-item");
+	var controls = document.querySelectorAll(".mui-control-content");
+	if(localStorage.itemIndex!=undefined){
+		for(var i=0;i<tabItems.length;i++){
+			tabItems[i].classList.remove("mui-active");
+			controls[i].classList.remove("mui-active");
+		}
+		tabItems[localStorage.itemIndex].classList.add("mui-active");
+		controls[localStorage.itemIndex].classList.add("mui-active");
+	}
+</script>

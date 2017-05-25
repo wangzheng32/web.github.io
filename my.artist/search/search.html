@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-icon-left-nav{
+				color: #999;
+			}
+			.mui-bar-nav>a:last-child{
+				width: 25px;
+				height: 25px;
+				background: url(../img/search_min.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 10px 0px 0px 5px !important;
+			}
+			.mui-input-clear .mui-active{
+				
+			}
+			.mui-table-view{
+				position: relative;
+				top: -15px;
+			}
+			.mui-table-view-cell img{
+				height: 44px;
+			}
+			.mui-oject{
+				position: absolute;
+				left: 100px;
+			}
+			.title-name{
+				position: absolute;
+				left: 100px;
+				top: 35px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">搜索</h1>
+		    <a class="mui-icon mui-pull-right" onclick="dealSearch()"></a>
+		</header>
+		
+		<div class="mui-content">
+		    <div class="mui-input-row mui-search">
+		        <input type="search" class="mui-input-clear" placeholder="">
+		    </div>
+		    <ul class="mui-table-view">
+	            
+	        </ul>
+            <div style="display: none;">
+            	<li id="cell-template" class="mui-table-view-cell">
+	                <a>
+	                    <img src=""/>
+	                	<span class="mui-oject"></span>
+	                    <span class="title-name"></span>
+	                </a>
+	            </li>
+            </div>
+		    
+		</div>
+	</body>
+
+</html>
+<script src="../interface/interface.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	var str = document.querySelector(".mui-input-clear");
+	function dealSearch () {
+		
+		var url = searchUrl+"&userId="+localStorage.userId+"&keyword="+str.value;
+		var cellTemp = document.getElementById("cell-template");
+		var tableView = document.querySelector(".mui-table-view");
+		tableView.innerHTML = "";
+		mui.get(url,function(result){
+			var dict = JSON.parse(result);
+			var list = dict.data;
+			
+			//阅读
+			var readList = list.read;
+			for(var i = 0; i < readList.length; i++) {
+				var read = readList[i];
+				var newCell = cellTemp.cloneNode(true);
+
+				var ojectTag = newCell.querySelector(".mui-oject");
+				var imgTag = newCell.querySelector(".mui-table-view-cell img");
+				var titleTag = newCell.querySelector(".title-name");
+
+				ojectTag.innerHTML = "阅读";
+				imgTag.src = imagePrefix + read.img_url;
+				titleTag.innerHTML = read.title;
+
+				tableView.appendChild(newCell);
+				newCell.setAttribute("data-id",read.id);
+			
+				//点击事件
+				newCell.addEventListener("click", function() {
+
+					//保存值
+					localStorage.detailId = this.getAttribute("data-id");
+//					mui.openWindow("../read/read-detail.html", "read-detailed");
+					this.querySelector(".mui-content a").href = "../read/read-detail.html";
+					
+				})
+			}
+
+			//音乐
+			var musicList = list.music;
+			for(var i = 0; i < musicList.length; i++) {
+				var music = musicList[i];
+				var newCell = cellTemp.cloneNode(true);
+
+				var ojectTag = newCell.querySelector(".mui-oject");
+				var imgTag = newCell.querySelector(".mui-table-view-cell img");
+				var titleTag = newCell.querySelector(".title-name");
+
+				ojectTag.innerHTML = "音乐";
+				imgTag.src = imagePrefix + music.img_url;
+				titleTag.innerHTML = music.title;
+
+				tableView.appendChild(newCell);
+				newCell.setAttribute("data-id",music.id);
+
+				//点击事件
+				newCell.addEventListener("click", function() {
+
+					//保存值
+					localStorage.detailId = this.getAttribute("data-id");
+//					mui.openWindow("../music/music-detail.html", "music-detailed");
+					this.querySelector(".mui-content a").href = "../music/music-detail.html";
+				})
+			}
+
+			//影视
+			var movieList = list.movie;
+			for(var i = 0; i < movieList.length; i++) {
+				var movie = movieList[i];
+				var newCell = cellTemp.cloneNode(true);
+
+				var ojectTag = newCell.querySelector(".mui-oject");
+				var imgTag = newCell.querySelector(".mui-table-view-cell img");
+				var titleTag = newCell.querySelector(".title-name");
+
+				ojectTag.innerHTML = "影视";
+				imgTag.src = imagePrefix + movie.img_url;
+				titleTag.innerHTML = movie.title;
+
+				tableView.appendChild(newCell);
+				newCell.setAttribute("data-id",movie.id);
+				//点击事件
+				newCell.addEventListener("click", function() {
+
+					//保存值
+					localStorage.detailId = this.getAttribute("data-id");
+//					mui.openWindow("../movie/movie-detail.html", "movie-detailed");
+					this.querySelector(".mui-content a").href = "../movie/movie-detail.html";
+				})
+			}
+
+	})
+	
+}
+	
+	
+</script>

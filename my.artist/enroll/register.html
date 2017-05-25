@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			*{font-family: "微软雅黑";}
+			.mui-bar-nav{background:#fff;}
+			.mui-bar-nav .mui-title{color:#999;}
+			.mui-bar-nav a{color:#000;font-size:35px !important;margin-top:-5px;}
+			.mui-card{border-radius: 5px;}
+			.mui-card p{margin:0;height: 70px;position:relative;}
+			.mui-card p:first-child{
+				border-bottom: 1px solid #ccc;
+			}
+			.mui-card p:nth-child(2){
+				border-bottom: 1px solid #ccc;
+			}
+			.mui-card p:nth-child(3){
+				border-bottom: 1px solid #ccc;
+			}
+			.mui-card img{
+				width: 28px;
+				height:28px;
+				margin:20px 10px;
+			}
+			#input-phone{width:80%;position: absolute;top:20%;left:15%;border:none;}
+			#verification-code{width:40%;position: absolute;top:20%;left:15%;border: none;;}
+			.send-code{position:absolute;top:30%;right:10%;font-size:16px;}
+			.mui-card span{position:absolute;right:40%;top:25%;background:#ccc;height:30px;width:1px;}
+			.next-btn{width:96%;margin-left:2%;border-radius: 5px;border:none;background: #ccc;color: #888;}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">注册</h1>
+		</header>
+		<div class="mui-content">
+		    <div class="mui-card">
+		    	<p><img src="../img/user-3.png"/><input type="text" id="input-phone" placeholder="手机号码"/></p>
+		    	<p><img src="../img/user-3.png"/><input type="text" id="input-phone" placeholder="用户名"/></p>
+		    	<!--<p><img src="../img/message.png"/><input type="text" id="verification-code" placeholder="短信验证码"/><span></span><a href="javascript:;" class="send-code">发送...验证码</a></p>-->
+		    	<p><img src="../img/message.png"/><input type="text" id="verification-code" placeholder="密码"/></p>
+		    	<p><img src="../img/message.png"/><input type="text" id="verification-code" placeholder="确认密码"/></p>
+		    </div>
+		    <button class="next-btn" onclick="dealClick()">下一步</button>
+		</div>
+	</body>
+
+</html>
+<script src="../interface/interface.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	
+	var input_list = document.querySelectorAll(".mui-card input");
+	
+	
+	function dealClick(){
+		var phone = input_list[0].value;
+		var username = input_list[1].value;
+		var passWord = input_list[2].value;
+		var rePassWord= input_list[3].value;
+		
+		if(passWord !== rePassWord){
+			alert("两次密码不同");
+			return;
+		}
+		var url = registerUrl + "&username="+username+"&password=" 
+		+ passWord + "&phone=" + phone;
+		console.log(url);
+		jQuery.get(url,{},function(result){
+			var dict = JSON.parse(result);
+			alert("code=" + dict.code + "desc=" + dict.desc);
+			mui.openWindow("../login/login.html","login");
+		})
+	}
+
+</script>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar-nav>a:first-child{
+				background: url(../img/aliwx_common_back_btn_normal.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 14px 0px 0px 0px !important;
+			}
+			.mui-bar-nav>a:last-child{
+				width: 25px;
+				height: 25px;
+				background: url(../img/user2.png) no-repeat;
+				background-size: 100% 100%;
+				margin: 10px 0px 0px 5px !important;
+			}
+			.mui-content{
+				padding-top: 0px !important;
+			}
+			.mui-table-view{
+				width: 100%;
+			}
+			.mui-table-view img{
+				width: 80%;
+				margin-left: 10%;
+			}
+			.cell-content{
+				width: 80%;
+				margin-left: 10%;
+				text-align: center;
+			}
+			.cell-content h3{
+				padding: 10px 0px;
+			}
+			.cell-content p{
+				line-height: 30px;
+				font-size: 18px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-icon mui-pull-left" onclick="movieBack()"></a>
+		    <h1 class="mui-title">影视详情</h1>
+		    <a class="mui-icon mui-pull-right" onclick="homepage()"></a>
+		</header>
+		
+		<div class="mui-content">
+		    
+		    <div class="mui-table-view">
+		    	<img src=""/>
+		    </div>
+		    <div class="cell-content">
+		    	<video width="100%" src="" controls="controls"></video>
+			    <h3 class="title"></h3>
+			    <p class="info"></p>
+			    <p>- 剧情简介 -</p>
+			    <p class="officialstory"></p>
+			    <button class="mui-btn mui-pull-right" onclick="collect()">收藏</button>
+		    </div>
+		    
+		</div>
+		
+	</body>
+
+</html>
+<script src="../interface/interface.js"></script>
+<script type="text/javascript">
+	var url = movieDetailUrl+"&detailId="+localStorage.detailId;
+	mui.get(url,{},function(result){
+		var dict = JSON.parse(result).data;
+		
+		mui(".mui-table-view")[0].style.background = "url("+imagePrefix+dict.poster+")";
+		mui(".mui-table-view")[0].style.backgroundRepeat = "no-repeat";
+		mui(".mui-table-view")[0].style.backgroundSize = "100% 100%";
+		mui(".mui-table-view img")[0].src = imagePrefix+dict.poster;
+		mui("video")[0].src = imagePrefix+dict.media_url;
+		mui(".title")[0].innerHTML = "《" + dict.subtitle + "》";
+		mui(".info")[0].innerHTML = dict.info.replace(/\n/g,"<br/>");
+		mui(".officialstory")[0].innerHTML = dict.officialstory;
+	})
+	function movieBack () {
+		mui.back();
+		localStorage.isindex = "3";
+	}
+	
+	
+	var btnUrl = ifFavoriteUrl+"&userId="+localStorage.userId+"&itemId="+localStorage.detailId;
+	var button = document.querySelector(".mui-btn");
+	mui.get(btnUrl,function(result){
+		var dict = JSON.parse(result);
+		if (dict.data.isFavorite == "false") {
+			button.innerHTML = "收藏";
+		} else{
+			button.innerHTML = "取消收藏";
+		}
+		
+	})
+	
+	function collect () {
+		if (button.innerHTML == "收藏") {
+			var addUrl = saveFavoriteUrl+"&userId="+localStorage.userId+"&itemId="+localStorage.detailId+"&type=5";
+			mui.get(addUrl,function(result){
+				var dict = JSON.parse(result);
+			})
+			button.innerHTML = "取消收藏";
+		} else{
+			var reUrl = cancleFavoriteUrl+"&userId="+localStorage.userId+"&itemId="+localStorage.detailId;
+			mui.get(reUrl,function(result){
+				var dict = JSON.parse(result);
+				console.log(dict.desc);
+			})
+			button.innerHTML = "收藏";
+		}
+	}
+	
+	function homepage () {
+		mui.openWindow("../homepage/homepage.html","homepage");
+	}
+</script>

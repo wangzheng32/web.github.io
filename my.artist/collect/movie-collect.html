@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			*{
+				font-family: "微软雅黑";
+				list-style: none;
+			}
+			.mui-bar-nav a{
+				color:#000;
+			}
+			.mui-table-view{
+				margin: 0px !important;
+			}
+			.mui-media-body{
+				margin-top: 12px !important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">电影收藏</h1>
+		</header>
+		
+		<div class="mui-content">
+		    
+		    <ul class="mui-table-view">
+               
+		    </ul>
+		    <div style="display: none;">
+		    	<li id="cell-template" class="mui-table-view-cell mui-media">
+                   <a href="javascript:;">
+                       <img class="mui-media-object mui-pull-left" src="http://placehold.it/40x30">
+                       <h4 class="mui-media-body">
+                       	血战钢锯岭
+                       </h4>
+                   </a>
+               </li>
+		    </div>
+		    
+		    
+		</div>
+		
+	</body>
+</html>
+<script src="../interface/interface.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	
+		var userId = localStorage.userId;
+		var url = getFavoriteUrl+"&userId="+userId+"&type=5";
+		
+		mui.get(url,{},function (result) {
+			
+			var dict = JSON.parse(result);
+			var list = dict.data;
+			for(var i=0; i<list.length; i++){
+				var item = list[i];
+				
+				var newCell = mui("#cell-template")[0].cloneNode(true);
+				newCell.id = undefined;
+				
+				var imgTag = newCell.querySelector(".mui-media-object");
+				var titleTag = newCell.querySelector(".mui-media-body");
+				
+				imgTag.src = imagePrefix+item.img_url;
+				titleTag.innerHTML = item.subtitle;
+				
+				
+				mui(".mui-table-view")[0].appendChild(newCell);
+				newCell.setAttribute("data-id",item.id);
+			
+				//点击事件
+				newCell.addEventListener("click", function() {
+
+					//保存值
+					localStorage.detailId = this.getAttribute("data-id");
+//					mui.openWindow("../movie/movie-detail.html", "movie-detailed");
+					this.querySelector(".mui-content a").href = "../movie/movie-detail.html";
+					
+				})
+				
+			}
+			
+		})
+		
+</script>

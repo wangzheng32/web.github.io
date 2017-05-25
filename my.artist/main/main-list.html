@@ -1,0 +1,269 @@
+
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar-nav a:first-child{
+				background: url(../img/search_min.png);
+				background-size: 100% 100%;
+				margin: 13px 0px 0px 0px !important;	
+			}
+			.mui-bar-nav a:last-child{
+				background: url(../img/user2.png);
+				background-size: 100% 100%;
+				margin: 13px 0px 0px 0px !important;
+				
+			}
+			.mui-table-view{
+				background-color: #eee;
+			}
+			.mui-table-view-cell{
+				background-color: white;
+				margin-bottom: 10px;				
+			}
+			
+			.cell-category{
+				text-align:center;
+			}
+			.cell-title{
+				padding: 5px 0px 5px 0px;
+				font-size: 1.1em;
+				color: black;
+			}
+			.cell-img-box img{
+				width: 100%;
+			}
+			.cell-forward{
+				white-space: normal;
+			}
+			.cell-action{
+				font-size: 0.6em;
+			}
+			.mui-slider-loop img{
+				height: 320px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		<header class="mui-bar mui-bar-nav">
+	    	<a class=" mui-icon  mui-pull-left" onclick="searchTo()"></a>
+	    	<h1 class="mui-title">首页</h1>
+	    	<a class=" mui-icon  mui-pull-right" onclick="homepage()"></a>
+		</header>
+		<div class="mui-content">
+		    <!--轮播-->
+		    <div id="slider" class="mui-slider" >
+		      <div class="mui-slider-group mui-slider-loop">
+					
+		      </div>
+		      <div class="mui-slider-indicator">
+		        <div class="mui-indicator mui-active"></div>
+		        <div class="mui-indicator"></div>
+		        <div class="mui-indicator"></div>  
+		      </div>
+		    </div>
+		       
+		       
+		      <div style="display: none;">
+		      	<div class="mui-slider-item" id="ads-cell-template">
+		         	<a href="#">
+		           	 	<img src="">
+		         	</a>
+		       	</div>
+		       	
+		     </div>
+		      
+		      
+		   
+		    
+		    
+		    <!--表格视图-->
+		    <ul class="mui-table-view">
+		    	
+		    	
+		    </ul>
+		    <div style="display: none;">
+		    	<li id="cell-template"  class="mui-table-view-cell">
+		    		<a href="">
+		    			<p class="cell-category"></p>
+		    			<p class="cell-title"></p>
+		    			<p class="cell-author"></p>
+		    			<div id="" class="cell-img-box">
+		    				<img src="" />
+		    			</div>
+		    			<p class="cell-forward"></p>
+		    			<p class="cell-action"></p>
+		    		</a>
+		    	</li>
+		    	
+		    </div>    
+		</div>
+		
+		<!--导入接口文件-->
+		<script src="../interface/interface.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			
+		var categoryList={
+			"1":"阅读",
+			"2":"连载",
+			"3":"问答",
+			"4":"音乐",
+			"5":"影视"			
+		}
+			
+		//下载数据显示
+		
+		mui.get(mainListUrl,{},function(result){
+			//JSON解析
+			var dict = JSON.parse(result);
+					
+			//显示数据
+			var tableView = document.querySelector(".mui-table-view");
+			var cellTemplate = document.getElementById("cell-template");
+			
+			var list = dict.data;
+			
+				for (var i = 0;i<list.length;i++) {
+					var item = list[i];
+					
+					//复制出一个cell
+					var newCell = cellTemplate.cloneNode(true);
+					newCell.id = undefined;
+					
+					//修改值
+					var categoryTag = newCell.querySelector(".cell-category");
+					var titleTag = newCell.querySelector(".cell-title");
+					var authorTag = newCell.querySelector(".cell-author");
+					var imgTag = newCell.querySelector(".cell-img-box img")
+					var forwardTag = newCell.querySelector(".cell-forward");
+					var actionTag = newCell.querySelector(".cell-action");
+					
+					categoryTag.innerHTML = "- "+categoryList[item.category]+" -";
+					titleTag.innerHTML = item.title;
+					authorTag.innerHTML = "作者:"+item.user_name;
+					imgTag.src = imagePrefix+item.img_url;
+					forwardTag.innerHTML = item.forward;
+					actionTag.innerHTML = "更新时间:"+item.post_date+" 收藏:"+item.like_count;
+										
+					//添加到表格中
+					tableView.appendChild(newCell);
+					
+	
+					//保存值
+					newCell.setAttribute("category",item.category);
+					newCell.setAttribute("data-index",item.id);
+			
+					//点击事件
+					newCell.addEventListener("click", function() {
+						localStorage.detailId = this.getAttribute("data-id");
+						if (this.getAttribute("category") == "1") {
+							this.querySelector(".mui-content a").href = "../read/read-detail.html";
+						}
+						if (this.getAttribute("category") == "4") {
+							this.querySelector(".mui-content a").href = "../music/music-detail.html";
+						}
+						if (this.getAttribute("category") == "5") {
+							this.querySelector(".mui-content a").href = "../movie/movie-detail.html";
+						}
+					})
+				}			
+			})
+					
+		
+		//下载广告栏数据
+		mui.get(adsUrl,function(result){
+			
+			//遍历每个广告数据
+			var dict = JSON.parse(result);
+			var adsList = dict.data;
+			var sliderGroup = document.querySelector(".mui-slider-group");
+			var adsCellTemplate = document.getElementById("ads-cell-template");
+				
+			
+			for (var i=-1;i<adsList.length+1;i++) {
+				
+			var newAdsCell = adsCellTemplate.cloneNode(true);
+			newAdsCell.id = undefined;
+			
+			var imgTag = newAdsCell.querySelector("img");
+			
+			var adsItem;
+					
+				//加载最后一张
+				if (i == -1) {
+					var adsItem = adsList[adsList.length-1];
+					var realUrl = imagePrefix+ adsItem.img_url;
+					imgTag.src = realUrl;
+					newAdsCell.classList.add("mui-slider-item-duplicate");
+					
+				} 
+				else if(i < adsList.length){
+					var adsItem = adsList[i];
+					var realUrl = imagePrefix+ adsItem.img_url;
+					imgTag.src = realUrl;
+					
+				}
+				else{
+					var adsItem = adsList[0];
+					var realUrl = imagePrefix+ adsItem.img_url;
+					imgTag.src = realUrl;
+					newAdsCell.classList.add("mui-slider-item-duplicate");	
+				}
+				//设置数据
+				newAdsCell.setAttribute("category",adsItem.category);
+				newAdsCell.setAttribute("data-index",adsItem.id);
+				newAdsCell.onclick=function(){
+					if (this.getAttribute("category") == "1") {
+//						mui.openWindow("../read/read-detail.html","read-detail");
+						this.querySelector(".mui-content a").href = "../read/read-detail.html";
+					}
+					if (this.getAttribute("category") == "4"){
+//						mui.openWindow("../music/music-detail.html","music-detail");
+						this.querySelector(".mui-content a").href = "../music/music-detail.html";
+					}
+					if (this.getAttribute("category") == "5"){
+//						mui.openWindow("../movie/movie-detail.html","movie-detail");
+						this.querySelector(".mui-content a").href = "../movie/movie-detail.html";
+					}
+					localStorage.detailId = this.getAttribute("data-index");
+				}
+				
+				sliderGroup.appendChild(newAdsCell);
+			}
+			
+			var slider = mui(".mui-slider");
+		    	slider.slider({
+		    		interval:2000
+		    	})
+			
+		})
+		</script>
+		
+	
+		   
+		    	
+		   
+	
+		
+	</body>
+
+</html>
+<script type="text/javascript">
+	function searchTo() {
+		mui.openWindow("../search/search.html","search");
+	}
+	function homepage() {
+		mui.openWindow("../homepage/homepage.html","homepage");
+	}
+</script>

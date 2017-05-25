@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-icon-left-nav{
+				color: #999;
+			}
+			.mui-content{
+				width: 90%;
+				margin: auto;
+			}
+			.mui-content>p{
+				padding: 10px 0px;
+			}
+			.mui-content>div{
+				height: 60px;
+				border: 1px solid #999;
+				border-top: none;
+				background-color: white;
+				padding-top: 9px;
+			}
+			.mui-content>div>input{
+				padding-left: 40px;
+				background-color: transparent;
+				border: none;
+				margin: 0px;
+			}
+			.user-name{
+				border-top: 1px solid #999 !important;
+				border-top-left-radius: 5px;
+				border-top-right-radius: 5px;
+			}
+			.user-name>input{
+				background: url(../img/user-3.png) no-repeat 2px 0px;
+			}
+			.cell-phone-number>input{
+				background: url(../img/message.png) no-repeat 2px 0px;
+			}
+			.identifying-code{
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
+			.identifying-code>input{
+				background: url(../img/code-img.png) no-repeat 2px 0px;
+				width: 60%;
+				border-right: 1px solid #999 !important;
+				float: left;
+			}
+			.box-code{
+				width: 40%;
+				height: 100%;
+				float: left;
+			}
+			.box-code img{
+				float: right;
+				margin-right: 10px;
+			}
+			.mui-btn{
+				width: 100%;
+				background-color: #DDDDDD;
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		
+		
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">找回密码</h1>
+		</header>
+		
+		<div class="mui-content">
+			<p>该手机仅用于确认您的身份，以保证您的账号安全</p>
+		    <div class="user-name">
+		    	<input type="text" placeholder="用户名" />
+		    </div>
+		    
+		   	<div class="cell-phone-number">
+		    	<input type="text" placeholder="手机号" />
+		    </div>
+		    <div class="identifying-code">
+		    	<input type="text" placeholder="验证码" />
+		    	<div class="box-code">
+		    		<img src="../img/renovate.png" onclick="renovate()"/>
+		    	</div>
+		    </div>
+		    <button class="mui-btn" onclick="next()">下一步</button>
+			    
+		</div>
+		
+		
+		
+	</body>
+
+</html>
+<script type="text/javascript">
+	
+	
+	//下一步
+	function next () {
+		
+	}
+	//验证码刷新
+	function renovate () {
+		
+	}
+</script>

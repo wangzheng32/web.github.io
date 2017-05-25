@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			header .mui-action-back{
+				color:#DADADC;
+			}
+			header .mui-title{
+				color:#888;
+				font-weight: 900;
+			}
+			input{
+				width: 80%;
+				height: 30px;
+				margin: 10px 0px;
+			}
+			.mui-btn-block{
+				margin: 0px;
+				padding: 0px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">更改密码</h1>
+		</header>
+		<div class="mui-content">
+		   旧密码:  <input type="text" class="pas" placeholder="旧密码"/><br />
+		   新密码:    <input type="text" class="new-pas" placeholder="新密码"/>  
+		   <button type="button" class="mui-btn mui-btn-grey mui-btn-block">更改密码</button>
+		 
+		</div>
+	</body>
+	<script src="../js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../interface/interface.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var btn = document.querySelector(".mui-btn");
+		var userId = localStorage.userId;
+		btn.onclick=function(){
+			var pas = document.querySelector(".pas").value;
+			var newPas = document.querySelector(".new-pas").value;
+			var url = changePassword + "&userId="+userId+"&password="+pas+"&&newPassword="+newPas;
+			jQuery.get(url,{},function(result){
+				var dict = JSON.parse(result);
+				if (dict.code == 0) {
+					localStorage.isLogin = "0";
+					mui.openWindow("../login/login.html","login");
+				}
+			})
+		}
+	</script>
+</html>
