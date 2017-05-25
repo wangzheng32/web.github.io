@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0px;
+				padding: 0px;
+			}
+			#top{
+				width: 100%;
+				height: 30px;
+				line-height: 30px;
+				color: #FFFFFF;
+				font-weight: bold;
+				padding-left:10px ;
+				background-color: #666666;
+				position: absolute;
+			}
+			#zhuce{
+				float: right;
+				width: 39px;
+				height: 24px;
+				line-height: 24px;
+				padding-left: 3px;
+				margin-top: 3px;
+				margin-right:16px;
+				box-sizing: border-box;
+				cursor: pointer;
+			}
+			#information{
+				width: 400px;
+				height: 300px;
+				border: 1px solid #000000;
+				position: absolute;
+				box-sizing: border-box;
+				padding:3px;
+				top: 25%;
+				left: 30%;
+				display: none;
+			}
+			#in_top{
+				width: 392px;
+				height: 30px;
+				box-sizing: border-box;
+				border: 1px solid #000000;
+				line-height: 30px;
+				color: #FFFFFF;
+				font-weight: bold;
+				padding-left:10px;
+				background-color: #666666;
+				cursor: crosshair;
+			}
+			#in_out{
+				float: right;
+				width: 40px;
+				height: 28px;
+				line-height: 28px;
+				color: #fff;
+				font-weight: bold;
+				box-sizing: border-box;
+				padding-left: 3px;
+				cursor: pointer;
+			}
+			#neirong{
+				width: 392px;
+				height: 259px;
+				box-sizing: border-box;
+				margin-top: 3px;
+				border: 1px solid #000000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="top">信息注册表
+			<span id="zhuce">注册</span>
+		</div>
+		<div id="information">
+			<div id="in_top">注册
+				<span id="in_out">关闭</span>
+			</div>
+			<div id="neirong"></div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	window.onload = function() {
+		var zhuCe = document.getElementById("zhuce");
+		var inOut = document.getElementById("in_out");
+		var infortimon = document.getElementById("information");
+		var inTop = document.getElementById("in_top");
+		inOut.onmouseover = function(){
+			inOut.style.backgroundColor = "#fff";
+			inOut.style.color = "black";
+		}
+		zhuCe.onmouseover = function(){
+			zhuCe.style.backgroundColor = "#fff";
+			zhuCe.style.color = "black";
+			zhuCe.style.border = "1px solid #000000";
+		}
+		inOut.onmouseout = function(){
+			inOut.style.backgroundColor = "";
+			inOut.style.color = "#fff";
+		}
+		zhuCe.onmouseout = function(){
+			zhuCe.style.backgroundColor = "";
+			zhuCe.style.color = "#fff";
+			zhuCe.style.border = "none";
+		}
+		inOut.onclick = function(){
+			infortimon.style.display = "none";
+		}
+		zhuCe.onclick = function(){
+			infortimon.style.display = "block";
+		}
+		inTop.onmousedown = function(ev){
+			var x = ev.pageX - infortimon.offsetLeft;
+			var y = ev.pageY - infortimon.offsetTop;
+			onmousemove = function(e){
+				var e = event || window.event;
+				infortimon.style.left = e.pageX-x +"px";
+				infortimon.style.top = e.pageY-y +"px";
+			}	
+		}
+		inTop.onmouseup = function(){
+			onmousemove = null;
+		}
+		//做注册内容
+		
+		
+		
+		
+	}
+</script>
