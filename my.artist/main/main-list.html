@@ -166,7 +166,7 @@
 			
 					//点击事件
 					newCell.addEventListener("click", function() {
-						localStorage.detailId = this.getAttribute("data-id");
+						localStorage.detailId = this.getAttribute("data-index");
 						if (this.getAttribute("category") == "1") {
 							this.querySelector(".mui-content a").href = "../read/read-detail.html";
 						}
